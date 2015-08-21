@@ -6,12 +6,12 @@
 - 提供一些数据统计功能
 
 ## 数据库设计
-- 用户表格
-Field|Type|Null|Key|Default|Extra
----|---|---|---|---|---
-id|int|no|PRI| |auto increment
-name|varchar(20)|no| | |
-password|char(32)|no| | |
+- 用户表格 
+ | Field | Type | Null | Key | Default | Extra |
+ | --- | --- | --- | --- | --- | --- |
+ | id | int | no | PRI | | auto increment |
+ | name | varchar(20) | no | | | |
+ | password | char(32) | no | | | |
 
 - 
 
