@@ -1,12 +1,16 @@
 from flask import Flask, request
 from flask_restful import Api
+from ems.actions.test import Test
+import conf
 
-from EMS.actions.test import Test
 
-app = Flask('EMS', static_folder = 'static', static_path = '/res')
+app = Flask(conf.APP_NAME,
+            static_folder=conf.STATIC_FOLDER,
+            static_path=conf.STATIC_PATH)
 api = Api(app)
 
 api.add_resource(Test, '/test')
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host=conf.EMS_HOST,
+            port=conf.EMS_PORT)
