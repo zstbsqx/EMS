@@ -15,12 +15,16 @@
 | password | char(32) | no | | | |
 | email | varchar(320) | yes | | | |
 
-- 好友关系表格
+- [已废弃]好友关系表格
 
 | Field | Type | Null | Key | Default | Extra |
 | --- | --- | :---: | :---: | --- | :---: |
 | user | varchar(20) | no | MUL | | foreign key |
 | friend | varchar(20) | no | MUL | | foreign key |
+| lend | int | no | | 0 | |
+
+ lend > 0 : friend欠user钱
+ lend < 0 : 相反
 
 - 事件表格
 
@@ -28,7 +32,14 @@
 | --- | --- | :---: | :---: | --- | :---: |
 | id | int | no | PRI | | auto incrment |
 | comment | test | | | | |
+| date | date | | | Date() | |
+| status | int(3) | | | 0 | |
 
+ status为借钱状态
+  0: 未确认 
+  1: 已确认
+  2: 已解决
+  3: 备用
 
 - 借记关系表格
 
