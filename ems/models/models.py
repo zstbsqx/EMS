@@ -7,8 +7,8 @@ class Model:
 
     @classmethod
     def get(cls, columnList=['*'], conditions=None):
-        with db.cursor() as cursor:
-            columns = columnList.join(',') if len(columnList) > 0 else '*'
+        with db as cursor:
+            columns = ','.join(columnList) if len(columnList) > 0 else '*'
             sql = 'SELECT ' + columns + ' FROM ' + cls.table
             if conditions:
                 sql += ' ' + conditions
@@ -28,7 +28,7 @@ class Model:
 
     @classmethod
     def insert(cls, obj):
-        with db.cursor() as cursor:
+        with db as cursor:
             columns = []
             values = []
             for key in obj:
@@ -49,7 +49,7 @@ class Model:
 
     @classmethod
     def insertMany(cls, list):
-        with db.cursor() as cursor:
+        with db as cursor:
             columns = []
             values = []
             template = []
@@ -76,7 +76,7 @@ class Model:
 
     @classmethod
     def update(cls, obj, conditions):
-        with db.cursor() as cursor:
+        with db as cursor:
             columns = []
             for key in obj:
                 columns.push(key + '=' + obj[key])
@@ -95,7 +95,7 @@ class Model:
 
     @classmethod
     def updateMany(cls, list, conditions):
-        with db.cursor() as cursor:
+        with db as cursor:
             columns = []
             values = []
             for key in list[0]:
@@ -118,7 +118,7 @@ class Model:
 
     @classmethod
     def delete(cls, conditions):
-        with db.cursor() as cursor:
+        with db as cursor:
             sql = 'DELETE FROM ' + cls.table + ' ' + conditions
             try:
                 count = cursor.execute(sql)
@@ -137,3 +137,6 @@ class Event(Model):
 
 class Lending(Model):
     table = 'lendings'
+
+if __name__ == '__main__':
+    print User.get()
