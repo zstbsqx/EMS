@@ -1,7 +1,7 @@
 import MySQLdb
-import conf
+from .. import conf
 
-db = MySQLdb.connect(host=conf.DATABASE_HOST, port=conf.DATABASE_PORT, user=conf.DATABASE_USER, passwd=conf.DATABASE_PASSWORD, db=conf.DATABASE_NAME)
+db = MySQLdb.connect(host=conf.DATABASE_HOST, port=conf.DATABASE_PORT, user=conf.DATABASE_USER, passwd=conf.DATABASE_PASSWORD, db=conf.DATABASE_NAME, charset='utf8')
 
 class Model:
 
