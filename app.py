@@ -1,5 +1,5 @@
-from flask import Flask, resource, request
-from flask.ext.restful import resource
+from flask import Flask, request
+#from flask_restful import resource
 
 app = Flask('EMS', static_folder = 'static', static_path = '/res')
 
