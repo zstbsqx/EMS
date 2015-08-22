@@ -1,0 +1,11 @@
+.badge-tool {
+    margin-right: 10px;
+}
+
+.badge-light {
+    background-color: #BBB;
+}
+
+.badge-danger {
+    background-color: #EF7C7C;
+}
