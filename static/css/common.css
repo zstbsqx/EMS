@@ -9,3 +9,13 @@
 .badge-danger {
     background-color: #EF7C7C;
 }
+
+.cube {
+    height: 100px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+
+.just {
+    padding-left: 10px;
+}
