@@ -18,6 +18,11 @@ class Config(object):
     DATABASE_PASSWORD = '123456'
     DATABASE_NAME = 'EMS'
 
+    # Table name
+    TABLE_USERS = 'users'
+    TABLE_EVENTS = 'events'
+    TABLE_LENDINGS = 'lendings'
+
     # app settings
     APP_NAME = 'EMS'
 

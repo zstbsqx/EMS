@@ -2,7 +2,8 @@
 
 from flask import Flask
 from flask_restful import Api
-from ems.conf.config import Config
+from ems.conf.Default import Config
+from ems.actions.UserQueryAction import UserQueryAction
 
 app = Flask(
     Config.APP_NAME,
@@ -11,8 +12,7 @@ app = Flask(
 api = Api(app)
 
 # 定义url映射
-from ems.actions.test import Test
-api.add_resource(Test, '/test')
+api.add_resource(UserQueryAction, '/user/query')
 
 if __name__ == '__main__':
     app.run(host=Config.EMS_HOST,

@@ -1,19 +1,23 @@
 import MySQLdb
-from ..conf.default import Config
-
-db = MySQLdb.connect(
-    host=Config.DATABASE_HOST,
-    port=Config.DATABASE_PORT,
-    user=Config.DATABASE_USER,
-    passwd=Config.DATABASE_PASSWORD,
-    db=Config.DATABASE_NAME,
-    charset='utf8')
+import MySQLdb.cursors
+from ..conf.Default import Config
+from ..conf.ErrCode import ErrCode
+from ..exception.EmsException import EmsException
 
 
-class Model:
+class DaoBase:
+    db = MySQLdb.connect(
+        host=Config.DATABASE_HOST,
+        port=Config.DATABASE_PORT,
+        user=Config.DATABASE_USER,
+        passwd=Config.DATABASE_PASSWORD,
+        db=Config.DATABASE_NAME,
+        cursorclass=MySQLdb.cursors.DictCursor,
+        charset='utf8')
+
     @classmethod
     def get(cls, columnList=['*'], conditions=None):
-        with db as cursor:
+        with cls.db as cursor:
             columns = ','.join(columnList) if len(columnList) > 0 else '*'
             sql = 'SELECT ' + columns + ' FROM ' + cls.table
             if conditions:
@@ -30,11 +34,12 @@ class Model:
                     result.append(obj)
                 return obj
             except:
-                return {"error": "get failed"}
+                raise EmsException(ErrCode.ERR_DB_FAILED,
+                                   'Query db failed')
 
     @classmethod
     def insert(cls, obj):
-        with db as cursor:
+        with cls.db as cursor:
             columns = []
             values = []
             for key in obj:
@@ -44,18 +49,18 @@ class Model:
             try:
                 count = cursor.execute(sql)
                 connect.commit()
-                id = cursor.lastrowid
                 result = {
-                    "id": cursor.lastrowid, 
+                    "id": cursor.lastrowid,
                     "count": count
                 }
                 return result
             except:
-                return {"error": "insert failed"}
+                raise EmsException(ErrCode.ERR_DB_FAILED,
+                                   'Insert db failed')
 
     @classmethod
     def insertMany(cls, list):
-        with db as cursor:
+        with cls.db as cursor:
             columns = []
             values = []
             template = []
@@ -76,13 +81,12 @@ class Model:
                 }
                 return result
             except:
-                return {"error": "insertMany failed"}
-
-
+                raise EmsException(ErrCode.ERR_DB_FAILED,
+                                   'Query db failed')
 
     @classmethod
     def update(cls, obj, conditions):
-        with db as cursor:
+        with cls.db as cursor:
             columns = []
             for key in obj:
                 columns.push(key + '=' + obj[key])
@@ -90,9 +94,8 @@ class Model:
             try:
                 count = cursor.execute(sql)
                 connect.commit()
-                id = cursor.lastrowid
                 result = {
-                    "id": cursor.lastrowid, 
+                    "id": cursor.lastrowid,
                     "count": count
                 }
                 return result
@@ -101,7 +104,7 @@ class Model:
 
     @classmethod
     def updateMany(cls, list, conditions):
-        with db as cursor:
+        with cls.db as cursor:
             columns = []
             values = []
             for key in list[0]:
@@ -124,7 +127,7 @@ class Model:
 
     @classmethod
     def delete(cls, conditions):
-        with db as cursor:
+        with cls.db as cursor:
             sql = 'DELETE FROM ' + cls.table + ' ' + conditions
             try:
                 count = cursor.execute(sql)
@@ -134,19 +137,3 @@ class Model:
                 return result
             except:
                 return {"error": "delete failed"}
-
-
-class User(Model):
-    table = 'users'
-
-
-class Event(Model):
-    table = 'events'
-
-
-class Lending(Model):
-    table = 'lendings'
-
-
-if __name__ == '__main__':
-    print User.get()

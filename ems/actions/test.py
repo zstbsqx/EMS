@@ -1,5 +1,5 @@
-from .actionBase import ActionBase
-from ..models import models
+from .ActionBase import ActionBase
+from ..models import UserDao
 from flask import request
 
 

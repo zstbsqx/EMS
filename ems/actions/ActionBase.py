@@ -1,9 +1,9 @@
 # coding:utf-8
-from ..conf.default import Config
-from ..conf.errCode import ErrCode
-from ..exception.emsException import EmsException
+from ..conf.Default import Config
+from ..conf.ErrCode import ErrCode
+from ..exception.EmsException import EmsException
 
-from flask import session, escape
+from flask import session, escape, request
 from flask_restful import Resource
 
 
@@ -24,6 +24,28 @@ class ActionBase(Resource):
             return escape(session['username'])
         return ''
 
+    def checkGetArgs(self, key, default_value, not_empty=False):
+        if not_empty:
+            value = request.args.get(key, '')
+            if value == '':
+                raise EmsException(ErrCode.PARAMETER_NOT_FOUND,
+                                   'Parameter not found: %s' % (key))
+            else:
+                return value
+        else:
+            return request.args.get(key, default_value)
+
+    def checkPostArgs(self, key, default_value, not_empty=False):
+        if not_empty:
+            value = request.form.get(key, '')
+            if value == '':
+                raise EmsException(ErrCode.PARAMETER_NOT_FOUND,
+                                   'Parameter not found: %s' % (key))
+            else:
+                return value
+        else:
+            return request.form.get(key, default_value)
+
     def get(self):
         try:
             return self.doGet()
@@ -33,11 +55,10 @@ class ActionBase(Resource):
                 'desc': e.desc
             }
         except Exception as e:
-            pass
-        return {
-            'code': ErrCode.UNKOWN_ERROR,
-            'desc': 'unkown error',
-        }
+            return {
+                'code': ErrCode.ERR_UNKOWN_ERROR,
+                'desc': 'Unkown error: %s' % (e),
+            }
 
     def post(self):
         try:
@@ -48,11 +69,10 @@ class ActionBase(Resource):
                 'desc': e.desc
             }
         except Exception as e:
-            pass
-        return {
-            'code': ErrCode.UNKOWN_ERROR,
-            'desc': 'unkown error',
-        }
+            return {
+                'code': ErrCode.ERR_UNKOWN_ERROR,
+                'desc': 'Unkown error: %s' % (e),
+            }
 
     def doPost(self):
         return {
