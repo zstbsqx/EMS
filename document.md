@@ -8,37 +8,41 @@
 ## 数据库设计
 - 用户表格
 
-| Field | Type | Null | Key | Default | Extra |
-| --- | --- | :---: | :---: | --- | :---: |
-| id | int | no | PRI | | auto increment |
-| name | varchar(20) | no | | | |
-| password | char(32) | no | | | |
-| email | varchar(320) | yes | | | |
+| 名称 | 类型 | 说明 |备注|
+| --- | --- | --- | --- |
+| user_id | int |用户id |主键,自增|
+| name | varchar(20) | 用户名，登录使用 | |
+| real_name | varchar(20) | 真实姓名 | |
+| password | char(20) | 密码 | 6-20位可打印acsii字符 |
+| email | varchar(320) | 邮箱地址 | 备用|
+| group | varchar(20) | 组群 | 备用 |
+
 
 - 事件表格
 
-| Field | Type | Null | Key | Default | Extra |
-| --- | --- | :---: | :---: | --- | :---: |
-| id | int | no | PRI | | auto incrment |
-| owner | int | no | | | foreign key |
-| comment | test | | | | |
-| date | date | | | Date() | |
-| status | int(3) | | | 0 | |
+| 名称 | 类型 | 说明 |备注|
+| --- | --- | --- | --- |
+|event_id| int|事件id|主键,自增|
+|creator_id|int|创建人||
+|creator|varchar(20)|创建人真实姓名||
+|event_desc|varchar(40)|事件描述||
+|gmt_create|date|创建时间||
+|event_status|int|状态:0(新建),1(已确认),2(已删除)||
 
- status为借钱状态
-  0: 新建
-  1: 已确认
-  2: 已删除
-  3: 备用
 
 - 借记关系表格
+ 
+| 名称 | 类型 | 说明 |备注|
+| --- | --- | --- | --- |
+|lending_id| int|借记关系id|主键,自增|
+|value|int|金钱，单位：元||
+|from_user|varchar(20)|出借方真实姓名||
+|from_user_id|int|出借方id||
+|to_user|varchar(20)|入借方真实姓名||
+|to_user_id|int|入借方id||
+|event_id|int|事件id||
+|lendings_status|int|借记关系状态,0(新建),1(已确认),2(已拒绝),3(已完结),4(已取消)| | 
 
-| Field | Type | Null | Key | Default | Extra |
-| --- | --- | :---: | :---: | --- | :---: |
-| value | int | no | | | |
-| fromuser | int | no | MUL | | foreign key |
-| touser | int | no | MUL | | foreign key |
-| event | int | no | MUL | | foreign key | 
 
 ## 接口设计
 
@@ -145,7 +149,7 @@ content-type均为application/json
             "comment": "东方饺子",
             "date": "2015-08-12 20:26:31",
             "status":0,
-            lendings: [
+            "lendings": [
                 {
                     "id": 3,
                     "fromuser": "周琳钧",
