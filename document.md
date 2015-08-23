@@ -15,17 +15,6 @@
 | password | char(32) | no | | | |
 | email | varchar(320) | yes | | | |
 
-- [已废弃]好友关系表格
-
-| Field | Type | Null | Key | Default | Extra |
-| --- | --- | :---: | :---: | --- | :---: |
-| user | varchar(20) | no | MUL | | foreign key |
-| friend | varchar(20) | no | MUL | | foreign key |
-| lend | int | no | | 0 | |
-
- lend > 0 : friend欠user钱
- lend < 0 : 相反
-
 - 事件表格
 
 | Field | Type | Null | Key | Default | Extra |
@@ -37,9 +26,9 @@
 | status | int(3) | | | 0 | |
 
  status为借钱状态
-  0: 未确认 
+  0: 新建
   1: 已确认
-  2: 已拒绝
+  2: 已删除
   3: 备用
 
 - 借记关系表格
@@ -47,8 +36,8 @@
 | Field | Type | Null | Key | Default | Extra |
 | --- | --- | :---: | :---: | --- | :---: |
 | value | int | no | | | |
-| from | int | no | MUL | | foreign key |
-| to | int | no | MUL | | foreign key |
+| fromuser | int | no | MUL | | foreign key |
+| touser | int | no | MUL | | foreign key |
 | event | int | no | MUL | | foreign key | 
 
 ## 接口设计
@@ -63,7 +52,7 @@ content-type均为application/json
 
  |参数|说明|备注|
  |---|----|----|
- |id |用户id||
+ |id |用户id|必选|
 - return
  
  ```json
@@ -84,9 +73,9 @@ content-type均为application/json
 
  |参数|说明|备注|
  |----|----|----|
- |email|电子邮件地址，登录用||
- |name|用户名||
- |password|密码||
+ |email|电子邮件地址，登录用|必选|
+ |name|用户名|必选|
+ |password|密码|必选|
 - return
 
  ```json
@@ -97,16 +86,45 @@ content-type均为application/json
  ```
 
 ### 事件信息
-  /api/event/
-  + get
+#### 获取事件列表
+- GET: /event/list
+- args
 
-  如果提供了id就直接查询id，否则如果提供了userid，就找出这个user相关的时间，按时间降序排序
-  ```
-  {
-    int:id,
-    int:userid
-  }
-  ```
+ |参数|说明|备注|
+ |----|----|----|
+ |page|页号|默认：0|
+ |page_size|每页显示的条数|默认:25|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok",
+        "result":[
+            {
+                "id":10834,
+                "owner": "周琳钧",
+                "comment": "电影《捉妖记》",
+                "date": "2015-08-12 20:26:31",
+                "status":0
+            },
+            {
+                "id":10034,
+                "owner": "罗富文",
+                "comment": "豪尚豪牛排",
+                "date": "2015-08-12 22:26:31",
+                "status": 1
+            },
+            {
+                "id":834,
+                "owner": "程季",
+                "comment": "日本回转寿司",
+                "date": "2015-07-12 20:26:31",
+                "status": 1
+            }
+        ]
+    }
+```
 
   + post
 
