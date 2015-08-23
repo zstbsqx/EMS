@@ -55,44 +55,45 @@
 
 content-type均为application/json
 
-unsafe的接口返回的信息均为
-```
-{
-    int:code,
-    str:desc, 
-    int:user
-}
-```
-
 ### 用户信息
 #### 查询用户信息
- - GET: /user/query
+- GET: /user/query
  
- - args
+- args
+
  |参数|说明|备注|
  |---|----|----|
  |id |用户id||
- - return
- ```
+- return
+ 
+ ```json
   {
-   "code": 0,
-   "desc": "ok",
-   "result": {
-    "email": "@",
-    "id": 1,
-    "name": "程季"
-   }
+    "code": 0,
+    "desc": "ok",
+    "result": {
+      "email": "@",
+      "id": 1,
+      "name": "程季"
+    }
   }
  ```
 
-  根据query中的id找出相关用户信息，返回
-  ```
-  {
-    int:id,
-    str:name,
-    str:email
-  }
-  ```
+#### 用户注册
+- POST: /user/create
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
+ |email|电子邮件地址，登录用||
+ |name|用户名||
+ |password|密码||
+- return
+ ```json
+    {
+        "code": 0,
+        "desc": "ok"
+    }
+ ```
 
   + post
 
