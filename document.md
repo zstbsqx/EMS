@@ -65,9 +65,25 @@ unsafe的接口返回的信息均为
 ```
 
 ### 用户信息
-  /api/users/\<int:id\>
-
-  + get
+#### 查询用户信息
+ - GET: /user/query
+ 
+ - args
+ |参数|说明|备注|
+ |---|----|----|
+ |id |用户id||
+ - return
+ ```
+  {
+   "code": 0,
+   "desc": "ok",
+   "result": {
+    "email": "@",
+    "id": 1,
+    "name": "程季"
+   }
+  }
+ ```
 
   根据query中的id找出相关用户信息，返回
   ```
