@@ -126,39 +126,44 @@ content-type均为application/json
     }
 ```
 
-  + post
+#### 获取事件详情
+- GET: /event/query
+- args
 
-  ```
-  {
-    int:owner,
-    str:comment,
-    date:date,
-    int:status,
-    list:lends:[{
-      int:to,
-      int:value (positive or negative)
-    }]
-  }
-  ```
+ |参数|说明|备注|
+ |----|----|----|
+ |event_id||必选|
+- return
 
-  + patch
+ ```json
+    {
+        "code": 0,
+        "desc": "ok",
+        "result":{
+            "id":10834,
+            "owner": "周琳钧",
+            "comment": "东方饺子",
+            "date": "2015-08-12 20:26:31",
+            "status":0,
+            lendings: [
+                {
+                    "id": 3,
+                    "fromuser": "周琳钧",
+                    "touser": "罗富文",
+                    "value": "67"
+                },
+                {
+                    "id": 4,
+                    "fromuser": "周琳钧",
+                    "touser": "程季",
+                    "value": "67"
+                }
+            ]
+        },
+    }
+```
 
-  更新信息，为了兼容这部分也可以放到post里
-  ```
-  {
-    int:id,
-    [changed fields]
-  }
-  ```
 
-  + delete
-  
-  根据id删除事件，只有owner可以删除
-  ```
-  {
-    int:id
-  }
-  ```
 
 ## 页面设计
 - 主页：包含记事，还钱等快捷按钮
