@@ -15,7 +15,7 @@
 | real_name | varchar(20) | 真实姓名 | |
 | password | char(20) | 密码 | 6-20位可打印acsii字符 |
 | email | varchar(320) | 邮箱地址 | 备用|
-| group | varchar(20) | 组群 | 备用 |
+| group | varchar(20) | 组群 | 备用,目前所有用户的组群都为default |
 
 
 - 事件表格
@@ -23,7 +23,6 @@
 | 名称 | 类型 | 说明 |备注|
 | --- | --- | --- | --- |
 |event_id| int|事件id|主键,自增|
-|creator_id|int|创建人||
 |creator|varchar(20)|创建人真实姓名||
 |event_desc|varchar(40)|事件描述||
 |gmt_create|date|创建时间||
@@ -37,10 +36,9 @@
 |lending_id| int|借记关系id|主键,自增|
 |value|int|金钱，单位：元||
 |from_user|varchar(20)|出借方真实姓名||
-|from_user_id|int|出借方id||
 |to_user|varchar(20)|入借方真实姓名||
-|to_user_id|int|入借方id||
 |event_id|int|事件id||
+|gmt_create|date|创建时间||
 |lendings_status|int|借记关系状态,0(新建),1(已确认),2(已拒绝),3(已完结),4(已取消)| | 
 
 
@@ -70,6 +68,46 @@ content-type均为application/json
       "real_name":"程季",
       "group": "104B,104,计24"
     }
+  }
+ ```
+
+#### 获取当前处于同一组群的用户列表
+- GET: /user/list
+ 
+- args
+
+ |参数|说明|备注|
+ |---|----|----|
+ |group ||必选|
+- return
+ 
+ ```json
+  {
+    "code": 0,
+    "desc": "ok",
+    "result": [
+        {
+            "email": "@",
+            "user_id": 1,
+            "name": "zstbsqx",
+            "real_name":"程季",
+            "group": "default"
+        },
+        {
+            "email": "@",
+            "user_id": 2,
+            "name": "winton",
+            "real_name":"罗富文",
+            "group": "default"
+        },
+        {
+            "email": "@",
+            "user_id": 3,
+            "name": "zhoulinjun1994",
+            "real_name":"周琳钧",
+            "group": "default"
+        }
+    ]
   }
  ```
 
@@ -141,7 +179,6 @@ content-type均为application/json
             {
                 "event_id":10834,
                 "creator": "周琳钧",
-                "creator_id": 12,
                 "event_desc": "电影《捉妖记》",
                 "gmt_create": "2015-08-12 20:26:31",
                 "event_status":0
@@ -149,7 +186,6 @@ content-type均为application/json
             {
                 "event_id":10824,
                 "creator": "罗富文",
-                "creator_id": 13,
                 "event_desc": "豪尚豪牛排",
                 "gmt_create": "2015-08-12 20:26:31",
                 "event_status":0
@@ -157,7 +193,6 @@ content-type均为application/json
             {
                 "event_id":834,
                 "creator": "程季",
-                "creator_id": 2,
                 "event_desc": "日本回转寿司",
                 "gmt_create": "2015-08-12 20:26:31",
                 "event_status":0
@@ -185,34 +220,94 @@ content-type均为application/json
             "creator_id": 12,
             "event_desc": "东方饺子王",
             "gmt_create": "2015-08-12 20:26:31",
-            "event_status":0
+            "event_status": 0,
             "lendings": [
                 {
                     "lending_id": 3,
                     "lending_status": 0,
-                    "value": "67"
+                    "value": "67",
                     "from_user": "周琳钧",
-                    "from_user_id": 12,
                     "to_user": "罗富文",
-                    "to_user_id": 13,
                     "event_id": 10834,
-                    
+                    "gmt_create": "2015-08-12 20:26:31"
                 },
                 {
                     "lending_id": 4,
                     "lending_status": 0,
-                    "value": "67"
-                    "from_user": "周琳钧",
-                    "from_user_id": 12,
+                    "value": "67",
+                    "from_user":"周琳钧",
                     "to_user": "程季",
-                    "to_user_id": 13,
                     "event_id": 10834,
+                    "gmt_create": "2015-08-12 20:26:31"
                 }
             ]
         },
     }
 ```
 
+
+#### 创建事件
+- POST: /event/creator
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
+ |event_desc|事件描述|必选|
+ |lendings|{["from_user":"userA","to_user":"userB","value":20],["from_user":"userA","to_user":"userC","value":30]}|格式为json的字符串|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok"
+    }
+```
+
+### 借记关系接口
+#### 查询借记关系
+- GET: /lending/query
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
+ |lending_id||必选|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok",
+        "result":{
+            {
+                "lending_id": 3,
+                "lending_status": 0,
+                "value": "67",
+                "from_user": "周琳钧",
+                "to_user": "罗富文",
+                "event_id": 10834,
+                "gmt_create": "2015-08-12 20:26:31"
+            }
+        },
+    }
+```
+
+#### 更新借记关系
+- POST: /lending/update
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
+ |lending_id||必选|
+ |lending_status|不为空则更新该字段|可选|
+ |value|不为空则更新该字段|可选|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok",
+    }
+```
 
 
 ## 页面设计
