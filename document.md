@@ -65,8 +65,10 @@ content-type均为application/json
     "desc": "ok",
     "result": {
       "email": "@",
-      "id": 1,
-      "name": "程季"
+      "user_id": 1,
+      "name": "zstbsqx",
+      "real_name":"程季",
+      "group": "104B,104,计24"
     }
   }
  ```
@@ -77,9 +79,40 @@ content-type均为application/json
 
  |参数|说明|备注|
  |----|----|----|
- |email|电子邮件地址，登录用|必选|
+ |email|电子邮件地址|必选|
+ |name|用户名|必选|
+ |real_name|真实姓名|必选|
+ |password|密码|必选|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok"
+    }
+ ```
+
+#### 用户登录
+- POST: /user/login
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
  |name|用户名|必选|
  |password|密码|必选|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok"
+    }
+ ```
+ 
+ #### 用户退出登录
+- POST: /user/logout
+- args
+ 无
 - return
 
  ```json
@@ -106,25 +139,28 @@ content-type均为application/json
         "desc": "ok",
         "result":[
             {
-                "id":10834,
-                "owner": "周琳钧",
-                "comment": "电影《捉妖记》",
-                "date": "2015-08-12 20:26:31",
-                "status":0
+                "event_id":10834,
+                "creator": "周琳钧",
+                "creator_id": 12,
+                "event_desc": "电影《捉妖记》",
+                "gmt_create": "2015-08-12 20:26:31",
+                "event_status":0
             },
             {
-                "id":10034,
-                "owner": "罗富文",
-                "comment": "豪尚豪牛排",
-                "date": "2015-08-12 22:26:31",
-                "status": 1
+                "event_id":10824,
+                "creator": "罗富文",
+                "creator_id": 13,
+                "event_desc": "豪尚豪牛排",
+                "gmt_create": "2015-08-12 20:26:31",
+                "event_status":0
             },
             {
-                "id":834,
-                "owner": "程季",
-                "comment": "日本回转寿司",
-                "date": "2015-07-12 20:26:31",
-                "status": 1
+                "event_id":834,
+                "creator": "程季",
+                "creator_id": 2,
+                "event_desc": "日本回转寿司",
+                "gmt_create": "2015-08-12 20:26:31",
+                "event_status":0
             }
         ]
     }
@@ -144,23 +180,33 @@ content-type均为application/json
         "code": 0,
         "desc": "ok",
         "result":{
-            "id":10834,
-            "owner": "周琳钧",
-            "comment": "东方饺子",
-            "date": "2015-08-12 20:26:31",
-            "status":0,
+            "event_id":10834,
+            "creator": "周琳钧",
+            "creator_id": 12,
+            "event_desc": "东方饺子王",
+            "gmt_create": "2015-08-12 20:26:31",
+            "event_status":0
             "lendings": [
                 {
-                    "id": 3,
-                    "fromuser": "周琳钧",
-                    "touser": "罗富文",
+                    "lending_id": 3,
+                    "lending_status": 0,
                     "value": "67"
+                    "from_user": "周琳钧",
+                    "from_user_id": 12,
+                    "to_user": "罗富文",
+                    "to_user_id": 13,
+                    "event_id": 10834,
+                    
                 },
                 {
-                    "id": 4,
-                    "fromuser": "周琳钧",
-                    "touser": "程季",
+                    "lending_id": 4,
+                    "lending_status": 0,
                     "value": "67"
+                    "from_user": "周琳钧",
+                    "from_user_id": 12,
+                    "to_user": "程季",
+                    "to_user_id": 13,
+                    "event_id": 10834,
                 }
             ]
         },
