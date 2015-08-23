@@ -55,7 +55,7 @@
 
 content-type均为application/json
 
-### 用户信息
+### 用户信息接口
 #### 查询用户信息
 - GET: /user/query
  
@@ -88,43 +88,13 @@ content-type均为application/json
  |name|用户名||
  |password|密码||
 - return
+
  ```json
     {
         "code": 0,
         "desc": "ok"
     }
  ```
-
-  + post
-
-  body所含信息为
-  ```
-  {
-    str:name,
-    (hashed)str:password,
-    str:email
-  }
-  ```
-
-  + patch
-
-  更新信息，为了兼容这部分也可以放到post里
-  ```
-  {
-    int:id,
-    [changed fields]
-  }
-  ```
-
-
-  + delete
-
-  只有本人可以删除
-  ```
-  {
-    int:id
-  }
-  ```
 
 ### 事件信息
   /api/event/
