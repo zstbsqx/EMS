@@ -263,6 +263,24 @@ content-type均为application/json
     }
 ```
 
+#### 更新事件
+- POST: /event/update
+- args
+
+ |参数|说明|备注|
+ |----|----|----|
+ |event_id||必选|
+ |event_desc|不为空则更新该字段|可选|
+ |event_status|不为空则更新该字段|可选|
+- return
+
+ ```json
+    {
+        "code": 0,
+        "desc": "ok",
+    }
+```
+
 ### 借记关系接口
 #### 查询借记关系
 - GET: /lending/query
