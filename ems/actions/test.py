@@ -1,8 +1,21 @@
-from flask import request
-from flask_restful import Resource
+from .actionBase import ActionBase
 from ..models import models
+from flask import request
 
-class Test(Resource):
-    def get(self):
-        return models.User.get()
-        #return 'test!' + request.args.get('p', 'no param')
+
+class Test(ActionBase):
+    def __init__(self):
+        ActionBase.__init__(self)
+
+    def doGet(self):
+        ActionBase.checkUserLogin(self)
+
+        strUser = ActionBase.getUserName(self)
+        arrUser = models.User.get()
+
+        return {
+            'code': 0,
+            'desc': 'ok',
+            'user': strUser,
+            'result': arrUser
+        }

@@ -1,10 +1,16 @@
 import MySQLdb
-from .. import conf
+from ..conf.default import Config
 
-db = MySQLdb.connect(host=conf.DATABASE_HOST, port=conf.DATABASE_PORT, user=conf.DATABASE_USER, passwd=conf.DATABASE_PASSWORD, db=conf.DATABASE_NAME, charset='utf8')
+db = MySQLdb.connect(
+    host=Config.DATABASE_HOST,
+    port=Config.DATABASE_PORT,
+    user=Config.DATABASE_USER,
+    passwd=Config.DATABASE_PASSWORD,
+    db=Config.DATABASE_NAME,
+    charset='utf8')
+
 
 class Model:
-
     @classmethod
     def get(cls, columnList=['*'], conditions=None):
         with db as cursor:
@@ -129,14 +135,18 @@ class Model:
             except:
                 return {"error": "delete failed"}
 
+
 class User(Model):
     table = 'users'
+
 
 class Event(Model):
     table = 'events'
 
+
 class Lending(Model):
     table = 'lendings'
+
 
 if __name__ == '__main__':
     print User.get()
