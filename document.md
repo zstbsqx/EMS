@@ -296,7 +296,6 @@ content-type均为application/json
         "code": 0,
         "desc": "ok",
         "result":{
-            {
                 "lending_id": 3,
                 "lending_status": 0,
                 "value": "67",
@@ -304,7 +303,6 @@ content-type均为application/json
                 "to_user": "罗富文",
                 "event_id": 10834,
                 "gmt_create": "2015-08-12 20:26:31"
-            }
         },
     }
 ```
