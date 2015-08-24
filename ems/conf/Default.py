@@ -19,9 +19,9 @@ class Config(object):
     DATABASE_NAME = 'EMS'
 
     # Table name
-    TABLE_USERS = 'users'
-    TABLE_EVENTS = 'events'
-    TABLE_LENDINGS = 'lendings'
+    TABLE_USERS = 't_users'
+    TABLE_EVENTS = 't_events'
+    TABLE_LENDINGS = 't_lendings'
 
     # app settings
     APP_NAME = 'EMS'

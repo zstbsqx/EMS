@@ -28,7 +28,7 @@ class ActionBase(Resource):
         if not_empty:
             value = request.args.get(key, '')
             if value == '':
-                raise EmsException(ErrCode.PARAMETER_NOT_FOUND,
+                raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
                                    'Parameter not found: %s' % (key))
             else:
                 return value
@@ -39,7 +39,7 @@ class ActionBase(Resource):
         if not_empty:
             value = request.form.get(key, '')
             if value == '':
-                raise EmsException(ErrCode.PARAMETER_NOT_FOUND,
+                raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
                                    'Parameter not found: %s' % (key))
             else:
                 return value
