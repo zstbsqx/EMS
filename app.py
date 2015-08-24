@@ -6,6 +6,7 @@ from ems.conf.Default import Config
 from ems.actions.UserQueryAction import UserQueryAction
 from ems.actions.LoginAction import LoginAction
 from ems.actions.LogoutAction import LogoutAction
+from ems.actions.UserCreateAction import UserCreateAction
 
 app = Flask(
     Config.APP_NAME,
@@ -19,6 +20,7 @@ api = Api(app)
 api.add_resource(UserQueryAction, '/user/query')
 api.add_resource(LoginAction, '/user/login')
 api.add_resource(LogoutAction, '/user/logout')
+api.add_resource(UserCreateAction, '/user/create')
 
 if __name__ == '__main__':
     app.run(host=Config.EMS_HOST,

@@ -5,7 +5,7 @@
 class Config(object):
     # host settings
     EMS_HOST = '0.0.0.0'
-    EMS_PORT = 8001 
+    EMS_PORT = 9001
     DEBUG = True
 
     STATIC_FOLDER = 'static'

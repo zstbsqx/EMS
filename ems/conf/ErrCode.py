@@ -4,6 +4,8 @@
 class ErrCode(object):
     ERR_OK = 0
 
+    ERR_PARAMETER_NOT_FOUND = 5
+
     ERR_USER_NOT_LOGIN = 11
     ERR_USER_NOT_FOUND = 12
     ERR_WRONG_PASSWORD = 13
