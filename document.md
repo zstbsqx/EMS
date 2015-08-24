@@ -13,7 +13,7 @@
 | user_id | int |用户id |主键,自增|
 | name | varchar(20) | 用户名，登录使用 | |
 | real_name | varchar(20) | 真实姓名 | |
-| password | char(20) | 密码 | 6-20位可打印acsii字符 |
+| password | char(32) | 密码 | 6-20位可打印acsii字符 |
 | email | varchar(320) | 邮箱地址 | 备用|
 | group | varchar(20) | 组群 | 备用,目前所有用户的组群都为default |
 
@@ -25,7 +25,7 @@
 |event_id| int|事件id|主键,自增|
 |creator|varchar(20)|创建人真实姓名||
 |event_desc|varchar(40)|事件描述||
-|gmt_create|date|创建时间||
+|gmt_create|timestamp|创建时间||
 |event_status|int|状态:0(新建),1(已确认),2(已删除)||
 
 
@@ -38,7 +38,7 @@
 |from_user|varchar(20)|出借方真实姓名||
 |to_user|varchar(20)|入借方真实姓名||
 |event_id|int|事件id||
-|gmt_create|date|创建时间||
+|gmt_create|timestamp|创建时间||
 |lendings_status|int|借记关系状态,0(新建),1(已确认),2(已拒绝),3(已完结),4(已取消)| | 
 
 
