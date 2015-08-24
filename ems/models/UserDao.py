@@ -11,15 +11,26 @@ class UserDao(DaoBase):
 
     @classmethod
     def addUser(cls, dictUser):
-        DaoBase.insert(dictUser)
+        with DaoBase.db as cursor:
+            sql = "INSERT INTO %s(name,real_name,email,password) \
+                VALUE(%s,%s,%s,%s)" \
+                % (Config.TABLE_USERS,
+                   dictUser['name'],
+                   dictUser['real_name'],
+                   dictUser['email'],
+                   dictUser['password'])
+            try:
+                cursor.execute(sql)
+            except:
+                raise EmsException(ErrCode.ERR_DB_FAILED, 'Insert db failed')
 
     @classmethod
     def queryUser(cls, strId):
-        cursor = DaoBase.db.cursor()
-        sql = "SELECT id,name,email FROM %s WHERE id = %d" \
-            % (Config.TABLE_USERS, int(strId))
-        try:
-            cursor.execute(sql)
-            return cursor.fetchone()
-        except:
-            raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
+        with DaoBase.db as cursor:
+            sql = "SELECT user_id,name,real_name,email,group FROM %s WHERE id = %d" \
+                % (Config.TABLE_USERS, int(strId))
+            try:
+                cursor.execute(sql)
+                return cursor.fetchone()
+            except:
+                raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
