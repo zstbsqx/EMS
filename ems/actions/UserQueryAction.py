@@ -8,7 +8,7 @@ class UserQueryAction(ActionBase):
         ActionBase.__init__(self)
 
     def doGet(self):
-        strId = ActionBase.checkGetArgs(self, 'user_id', '', True)
+        strId = ActionBase.checkArgs(self, 'user_id', '', True)
         dictUser = UserDao.queryUser(strId)
 
         return {

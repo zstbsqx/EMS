@@ -9,10 +9,10 @@ class UserCreateAction(ActionBase):
         ActionBase.__init__(self)
 
     def doPost(self):
-        strEmail = ActionBase.checkGetArgs(self, 'email', '', True)
-        strName = ActionBase.checkGetArgs(self, 'name', '', True)
-        strRealName = ActionBase.checkGetArgs(self, 'real_name', '', True)
-        strPassword = ActionBase.checkGetArgs(self, 'password', '', True)
+        strEmail = ActionBase.checkArgs(self, 'email', '', True)
+        strName = ActionBase.checkArgs(self, 'name', '', True)
+        strRealName = ActionBase.checkArgs(self, 'real_name', '', True)
+        strPassword = ActionBase.checkArgs(self, 'password', '', True)
 
         m = hashlib.md5()
         m.update(strPassword)

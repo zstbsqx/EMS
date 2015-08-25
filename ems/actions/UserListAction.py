@@ -8,7 +8,7 @@ class UserListAction(ActionBase):
         ActionBase.__init__(self)
 
     def doGet(self):
-        strGroup = ActionBase.checkGetArgs(self, 'group', '')
+        strGroup = ActionBase.checkArgs(self, 'group', '')
 
         if strGroup != '':
             arrUsers = UserDao.queryUserByGroup(strGroup)
