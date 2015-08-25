@@ -7,6 +7,7 @@ from ems.actions.UserQueryAction import UserQueryAction
 from ems.actions.LoginAction import LoginAction
 from ems.actions.LogoutAction import LogoutAction
 from ems.actions.UserCreateAction import UserCreateAction
+from ems.actions.UserListAction import UserListAction
 
 app = Flask(
     Config.APP_NAME,
@@ -17,10 +18,11 @@ api = Api(app)
 
 
 # 定义url映射
-api.add_resource(UserQueryAction, '/user/query')
 api.add_resource(LoginAction, '/user/login')
 api.add_resource(LogoutAction, '/user/logout')
 api.add_resource(UserCreateAction, '/user/create')
+api.add_resource(UserQueryAction, '/user/query')
+api.add_resource(UserListAction, '/user/list')
 
 if __name__ == '__main__':
     app.run(host=Config.EMS_HOST,

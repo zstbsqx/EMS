@@ -35,3 +35,26 @@ class UserDao(DaoBase):
                 return cursor.fetchone()
             except:
                 raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
+
+    @classmethod
+    def queryUserByGroup(cls, strGroup):
+        with DaoBase.db as cursor:
+            sql = "SELECT user_id,name,real_name,email,groups FROM %s \
+                WHERE groups = '%s'" \
+                % (Config.TABLE_USERS, strGroup)
+            try:
+                cursor.execute(sql)
+                return cursor.fetchall()
+            except:
+                raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
+
+    @classmethod
+    def getUserList(cls):
+        with DaoBase.db as cursor:
+            sql = "SELECT user_id,name,real_name,email,groups FROM %s" \
+                % (Config.TABLE_USERS)
+            try:
+                cursor.execute(sql)
+                return cursor.fetchall()
+            except:
+                raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
