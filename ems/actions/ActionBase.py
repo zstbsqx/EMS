@@ -11,7 +11,8 @@ class ActionBase(Resource):
     def __init__(self):
         pass
 
-    def checkUserLogin(self):
+    @classmethod
+    def checkUserLogin(cls):
         if Config.CHECK_USER_LOGIN == 0:
             return True
         elif 'username' not in session:
@@ -19,15 +20,17 @@ class ActionBase(Resource):
             return False
         return True
 
-    def getUserName(self):
+    @classmethod
+    def getUserName(cls):
         if 'username' in session:
             return escape(session['username'])
         return ''
 
-    def checkGetArgs(self, key, default_value, not_empty=False):
+    @classmethod
+    def checkGetArgs(cls, key, default_value=None, not_empty=False):
         if not_empty:
-            value = request.args.get(key, '')
-            if value == '':
+            value = request.args.get(key)
+            if value is None:
                 raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
                                    'Parameter not found: %s' % (key))
             else:
@@ -35,10 +38,11 @@ class ActionBase(Resource):
         else:
             return request.args.get(key, default_value)
 
-    def checkPostArgs(self, key, default_value, not_empty=False):
+    @classmethod
+    def checkPostArgs(cls, key, default_value=None, not_empty=False):
         if not_empty:
-            value = request.form.get(key, '')
-            if value == '':
+            value = request.form.get(key)
+            if value is None:
                 raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
                                    'Parameter not found: %s' % (key))
             else:

@@ -35,3 +35,9 @@ class UserDao(DaoBase):
                 return cursor.fetchone()
             except:
                 raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
+
+    @classmethod
+    def queryLoginUser(cls, username, password):
+        users = cls.get(['user_id'], 'WHERE name=\'%s\' AND password=\'%s\'' % 
+                        (username, password))
+        return users
