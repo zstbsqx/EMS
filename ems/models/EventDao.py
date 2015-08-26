@@ -19,3 +19,14 @@ class EventDao(DaoBase):
                 return cursor.fetchall()
             except:
                 raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
+
+    @classmethod
+    def queryEvent(cls, intEventId):
+        with DaoBase.db as cursor:
+            sql = "SELECT * FROM %s WHERE event_id = %d" \
+                % (Config.TABLE_EVENTS, intEventId)
+            try:
+                cursor.execute(sql)
+                return cursor.fetchone()
+            except:
+                raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')

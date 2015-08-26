@@ -9,6 +9,7 @@ from ems.actions.LogoutAction import LogoutAction
 from ems.actions.UserCreateAction import UserCreateAction
 from ems.actions.UserListAction import UserListAction
 from ems.actions.EventListAction import EventListAction
+from ems.actions.EventQueryAction import EventQueryAction
 
 app = Flask(
     Config.APP_NAME,
@@ -25,6 +26,7 @@ api.add_resource(UserCreateAction, '/user/create')
 api.add_resource(UserQueryAction, '/user/query')
 api.add_resource(UserListAction, '/user/list')
 api.add_resource(EventListAction, '/event/list')
+api.add_resource(EventQueryAction, '/event/query')
 
 if __name__ == '__main__':
     app.run(host=Config.EMS_HOST,
