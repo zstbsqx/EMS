@@ -3,6 +3,7 @@ import MySQLdb.cursors
 from ..conf.Default import Config
 from ..conf.ErrCode import ErrCode
 from ..exception.EmsException import EmsException
+from traceback import print_exc
 
 
 class DaoBase:
@@ -23,17 +24,12 @@ class DaoBase:
             if conditions:
                 sql += ' ' + conditions
             try:
+                print('sql:%s' % sql)
                 cursor.execute(sql)
-                header = cursor.description
-                rows = cursor.fetchall()
-                result = []
-                for row in rows:
-                    obj = {}
-                    for i in xrange(len(header)):
-                        obj[header[i][0]] = row[i]
-                    result.append(obj)
-                return obj
-            except:
+                result = cursor.fetchall()
+                return result
+            except Exception as e:
+                print_exc()
                 raise EmsException(ErrCode.ERR_DB_FAILED,
                                    'Query db failed')
 
@@ -45,16 +41,18 @@ class DaoBase:
             for key in obj:
                 columns.push(key)
                 values.push(obj[key])
-            sql = 'INSERT INTO ' + cls.table + '(' + columns.join(',') + ') VALUES(' + values.join(',') + ')'
+            sql = 'INSERT INTO ' + cls.table + '(' + columns.join(',') + ')\
+                  VALUES(' + values.join(',') + ')'
             try:
                 count = cursor.execute(sql)
-                connect.commit()
+                cls.db.commit()
                 result = {
                     "id": cursor.lastrowid,
                     "count": count
                 }
                 return result
-            except:
+            except Exception as e:
+                print_exc()
                 raise EmsException(ErrCode.ERR_DB_FAILED,
                                    'Insert db failed')
 
@@ -72,15 +70,17 @@ class DaoBase:
                 for column in columns:
                     value.append(obj[column])
                 values.append(value)
-            sql = 'INSERT INTO ' + cls.table + '(' + columns.join(',') + ') VALUES(' + template.join(',') + ')'
+            sql = 'INSERT INTO ' + cls.table + '(' + columns.join(',') + ') \
+                  VALUES(' + template.join(',') + ')'
             try:
                 count = cursor.executemany(sql, values)
-                connect.commit()
+                cls.db.commit()
                 result = {
                     "count": count
                 }
                 return result
-            except:
+            except Exception as e:
+                print_exc()
                 raise EmsException(ErrCode.ERR_DB_FAILED,
                                    'Query db failed')
 
@@ -90,39 +90,45 @@ class DaoBase:
             columns = []
             for key in obj:
                 columns.push(key + '=' + obj[key])
-            sql = 'UPDATE ' + cls.table + ' SET ' + columns.join(',') + ' ' + conditions
+            sql = 'UPDATE ' + cls.table + ' SET ' + columns.join(',') + ' ' +\
+                  conditions
             try:
                 count = cursor.execute(sql)
-                connect.commit()
+                cls.db.commit()
                 result = {
                     "id": cursor.lastrowid,
                     "count": count
                 }
                 return result
-            except:
+            except Exception as e:
+                print_exc()
                 return {"error": "update failed"}
 
     @classmethod
     def updateMany(cls, list, conditions):
         with cls.db as cursor:
+            keys = []
             columns = []
             values = []
             for key in list[0]:
+                keys.push(key)
                 columns.push(key + '=%s')
             for obj in list:
                 value = []
-                for column in KVs:
+                for column in keys:
                     value.append(obj[column])
                 values.append(value)
-            sql = 'UPDATE ' + cls.table + ' SET ' + columns.join(',') + ' ' + conditions
+            sql = 'UPDATE ' + cls.table + ' SET ' + columns.join(',') + ' ' + \
+                  conditions
             try:
                 count = cursor.executemany(sql, values)
-                connect.commit()
+                cls.db.commit()
                 result = {
                     "count": count
                 }
                 return result
-            except:
+            except Exception as e:
+                print_exc()
                 return {"error": "updatemany failed"}
 
     @classmethod
@@ -135,5 +141,6 @@ class DaoBase:
                     "count": count
                 }
                 return result
-            except:
+            except Exception as e:
+                print_exc()
                 return {"error": "delete failed"}

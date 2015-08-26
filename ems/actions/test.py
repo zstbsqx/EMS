@@ -11,7 +11,7 @@ class Test(ActionBase):
         ActionBase.checkUserLogin(self)
 
         strUser = ActionBase.getUserName(self)
-        arrUser = models.User.get()
+        arrUser = UserDao.User.get()
 
         return {
             'code': 0,
