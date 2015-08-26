@@ -9,10 +9,10 @@ class UserQueryAction(ActionBase):
 
     def doGet(self):
         strId = ActionBase.checkArgs(self, 'user_id', '', True)
-        dictUser = UserDao.queryUser(strId)
+        arrUser = UserDao.queryUser(strId)
 
         return {
             'code': 0,
             'desc': 'ok',
-            'result': dictUser
+            'result': arrUser
         }
