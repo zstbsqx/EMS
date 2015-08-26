@@ -5,13 +5,15 @@ from ..exception.EmsException import EmsException
 
 from flask import session, escape, request
 from flask_restful import Resource
+from traceback import print_exc
 
 
 class ActionBase(Resource):
     def __init__(self):
         pass
 
-    def checkUserLogin(self):
+    @classmethod
+    def checkUserLogin(cls):
         if Config.CHECK_USER_LOGIN == 0:
             return True
         elif 'username' not in session:
@@ -19,18 +21,33 @@ class ActionBase(Resource):
             return False
         return True
 
-    def checkUserAuthority(self):
+    @classmethod
+    def checkUserAuthority(cls):
         pass
 
-    def getUserName(self):
+    @classmethod
+    def getUserName(cls):
         if 'username' in session:
             return escape(session['username'])
         return ''
 
-    def checkArgs(self, key, default_value, not_empty=False):
+    @classmethod
+    def checkArgs(cls, key, default_value=None, not_empty=False):
         if not_empty:
-            value = request.args.get(key, '')
-            if value == '':
+            value = request.args.get(key)
+            if value is None:
+                raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
+                                   'Parameter not found: %s' % (key))
+            else:
+                return value
+        else:
+            return request.args.get(key, default_value)
+
+    @classmethod
+    def checkForm(cls, key, default_value=None, not_empty=False):
+        if not_empty:
+            value = request.form.get(key)
+            if value is None:
                 raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
                                    'Parameter not found: %s' % (key))
             else:
@@ -48,6 +65,7 @@ class ActionBase(Resource):
                 'desc': e.desc
             }
         except Exception as e:
+            print_exc()
             return {
                 'code': ErrCode.ERR_UNKOWN_ERROR,
                 'desc': 'Unkown error: %s' % (e),
@@ -63,6 +81,7 @@ class ActionBase(Resource):
                 'desc': e.desc
             }
         except Exception as e:
+            print_exc()
             return {
                 'code': ErrCode.ERR_UNKOWN_ERROR,
                 'desc': 'Unkown error: %s' % (e),

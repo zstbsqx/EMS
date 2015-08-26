@@ -1,9 +1,11 @@
 from ActionBase import ActionBase
 from flask import session
-import json
 
 
 class LogoutAction(ActionBase):
     def doGet(self):
-        session['bug'] = 'name'
-        return json.dumps(session)
+        if 'uid' in session:
+            del session['uid']
+            return 'Logout success'
+        else:
+            return 'You are not logged in'

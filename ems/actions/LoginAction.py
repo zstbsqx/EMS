@@ -1,9 +1,22 @@
 from ActionBase import ActionBase
-from flask import request, session
-from hashlib import md5
+from ..models import UserDao
+from flask import session
+import hashlib
 
 
 class LoginAction(ActionBase):
     def doPost(self):
-        #
-        hashedPassword = md5()
+        if 'uid' in session:
+            return 'You have logged in'
+        name = self.checkForm('name', not_empty=True)
+        password = self.checkForm('password', not_empty=True)
+        m = hashlib.md5()
+        m.update(password)
+        md5Password = m.hexdigest()
+        users = UserDao.UserDao.queryLoginUser(name, md5Password)
+        if len(users) is 1:
+            uid = users[0]['user_id']
+            session['uid'] = uid
+            return 'Login success'
+        else:
+            return 'Login failed'

@@ -37,6 +37,12 @@ class UserDao(DaoBase):
                 raise EmsException(ErrCode.ERR_DB_FAILED, 'Query db failed')
 
     @classmethod
+    def queryLoginUser(cls, username, password):
+        users = cls.get(['user_id'], 'WHERE name=\'%s\' AND password=\'%s\'' % 
+                        (username, password))
+        return users
+
+    @classmethod
     def queryUserByGroup(cls, strGroup):
         with DaoBase.db as cursor:
             sql = "SELECT user_id,name,real_name,email,groups FROM %s \
