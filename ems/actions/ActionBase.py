@@ -21,13 +21,17 @@ class ActionBase(Resource):
         return True
 
     @classmethod
+    def checkUserAuthority(cls):
+        pass
+
+    @classmethod
     def getUserName(cls):
         if 'username' in session:
             return escape(session['username'])
         return ''
 
     @classmethod
-    def checkGetArgs(cls, key, default_value=None, not_empty=False):
+    def checkArgs(cls, key, default_value=None, not_empty=False):
         if not_empty:
             value = request.args.get(key)
             if value is None:
@@ -38,20 +42,9 @@ class ActionBase(Resource):
         else:
             return request.args.get(key, default_value)
 
-    @classmethod
-    def checkPostArgs(cls, key, default_value=None, not_empty=False):
-        if not_empty:
-            value = request.form.get(key)
-            if value is None:
-                raise EmsException(ErrCode.ERR_PARAMETER_NOT_FOUND,
-                                   'Parameter not found: %s' % (key))
-            else:
-                return value
-        else:
-            return request.form.get(key, default_value)
-
     def get(self):
         try:
+            self.checkUserAuthority()
             return self.doGet()
         except EmsException as e:
             return {
@@ -66,6 +59,7 @@ class ActionBase(Resource):
 
     def post(self):
         try:
+            self.checkUserAuthority()
             return self.doPost()
         except EmsException as e:
             return {

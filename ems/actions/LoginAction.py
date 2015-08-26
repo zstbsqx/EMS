@@ -6,8 +6,8 @@ from hashlib import md5
 
 class LoginAction(ActionBase):
     def doPost(self):
-        name = self.checkPostArgs('name')
-        password = self.checkPostArgs('password')
+        name = self.checkArgs('name')
+        password = self.checkArgs('password')
         hashedPassword = md5().update(password).hexdigest()
         users = UserDao.UserDao.queryUserLogin(name, hashedPassword)
         if users:

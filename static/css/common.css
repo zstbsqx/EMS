@@ -19,3 +19,7 @@
 .just {
     padding-left: 10px;
 }
+
+.float-right {
+    float: right;
+}
