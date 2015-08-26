@@ -24,7 +24,6 @@ class DaoBase:
             if conditions:
                 sql += ' ' + conditions
             try:
-                print('sql:%s' % sql)
                 cursor.execute(sql)
                 result = cursor.fetchall()
                 return result
