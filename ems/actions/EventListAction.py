@@ -8,8 +8,8 @@ class EventListAction(ActionBase):
         ActionBase.__init__(self)
 
     def doGet(self):
-        strPage = ActionBase.checkArgs(self, 'page', '0')
-        strPageSize = ActionBase.checkArgs(self, 'page_size', '25')
+        strPage = ActionBase.checkArgs('page', '0')
+        strPageSize = ActionBase.checkArgs('page_size', '25')
 
         arrEvents = EventDao.getEventList(int(strPage), int(strPageSize))
 

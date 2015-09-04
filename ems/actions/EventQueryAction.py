@@ -9,8 +9,7 @@ class EventQueryAction(ActionBase):
         ActionBase.__init__(self)
 
     def doGet(self):
-        strEventId = ActionBase.checkArgs(self, 'event_id', '', True)
-        strEventId = '1'
+        strEventId = ActionBase.checkArgs('event_id', '', True)
 
         arrEvent = EventDao.queryEvent(int(strEventId))
         arrLendings = LendingDao.getLendingByEventId(int(strEventId))
